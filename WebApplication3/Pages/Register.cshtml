@@ -1,0 +1,158 @@
+﻿@page
+@model WebApplication3.Pages.RegisterModel
+@{
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center align-items-center">
+
+        <div class="col-sm-12 col-md-12 col-lg-6">
+            <h1 class="mb-3">Register </h1>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="validation-summary-errors text-danger">
+                    <ul>
+                        <li>@Html.ValidationSummary(true, "", new { @class = "text-danger" })</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" asp-for="RModel.FirstName">First Name</label>
+                        <input type="text" asp-for="RModel.FirstName" class="form-control" />
+                        <span asp-validation-for="RModel.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" asp-for="RModel.LastName">Last Name</label>
+                        <input type="text" asp-for="RModel.LastName" class="form-control" />
+                        <span asp-validation-for="RModel.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Gender">Gender</label>
+                    <select asp-for="RModel.Gender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="RModel.Gender" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.NRIC">NRIC</label>
+                    <input type="text" asp-for="RModel.NRIC" class="form-control" />
+                    <span asp-validation-for="RModel.NRIC" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.EmailAddress">Email Address</label>
+                    <input type="text" asp-for="RModel.EmailAddress" class="form-control" />
+                    <span asp-validation-for="RModel.EmailAddress" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" asp-for="RModel.Password">Password</label>
+                        <input type="password" id="passwordInput" asp-for="RModel.Password" class="form-control"
+                               onInput="checkPasswordStrength()" onInput="validatePassword()" />
+                        <span asp-validation-for="RModel.Password" class="text-danger"></span>
+
+                        <div id="passwordStrength" class="mt-2"></div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                        <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.DateOfBirth">Date of Birth</label>
+                    <input type="date" asp-for="RModel.DateOfBirth" class="form-control" />
+                    <span asp-validation-for="RModel.DateOfBirth" class="text-danger"></span>
+                </div>
+
+               <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Resume">Resume (.docx or .pdf file)</label>
+                    <input type="file" asp-for="RModel.Resume" class="form-control" />
+                    <span asp-validation-for="RModel.Resume" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.WhoAmI">Who Am I</label>
+                    <textarea asp-for="RModel.WhoAmI" class="form-control"></textarea>
+                    <span asp-validation-for="RModel.WhoAmI" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        //2.2 offer password feedback
+        function checkPasswordStrength() {
+            var password = document.getElementById('passwordInput').value;
+            var strength = 0;
+
+
+            if (password.length < 8) {
+                strength = 0;
+            } else {
+                if (/[A-Z]/.test(password)) {
+                    strength += 1;
+                }
+
+                if (/[a-z]/.test(password)) {
+                    strength += 1;
+                }
+
+                if (/\d/.test(password)) {
+                    strength += 1;
+                }
+
+                if (/[^a-zA-Z\d]/.test(password)) {
+                    strength += 1;
+                }
+            }
+
+            var strengthDiv = document.getElementById('passwordStrength');
+            strengthDiv.innerHTML = 'Password Strength: ';
+
+            if (strength === 0) {
+                strengthDiv.innerHTML += 'Weak';
+                strengthDiv.className = 'text-danger';
+            } else if (strength <= 3) {
+                strengthDiv.innerHTML += 'Medium';
+                strengthDiv.className = 'text-warning';
+            } else {
+                strengthDiv.innerHTML += 'Strong';
+                strengthDiv.className = 'text-success';
+            }
+        }
+
+        //2.3 client-based checks
+        function validatePassword() {
+            var password = document.getElementById('passwordInput').value;
+
+            if (/[A-Z]/.test(password) || /[a-z]/.test(password) || ! /\d /.test(password) || !/[^a-zA-Z\d]/.test(password)) {
+                alert('Password must contain at least one uppercase, one lowercase,one digit, one special character.');
+                return false;
+            }
+
+            if (password.length < 12) {
+                alert('Password must be minimum 12 chars.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+}

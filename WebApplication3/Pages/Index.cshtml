@@ -1,0 +1,82 @@
+﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Identity,
+@using WebApplication3.Model,
+@inject SignInManager<ApplicationUser> SignInManager;
+@inject IHttpContextAccessor contxt;
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                @if (Model.Users == null)
+                {
+                    <p>No user details found.</p>
+                } else {
+                    <h1 class="mb-3">Your Details</h1>
+                    <form asp-action="Index" method="post" asp-antiforgery="true">
+                        @foreach (var user in Model.Users)
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">First Name:</label>
+                                <p class="form-control">@user.FirstName</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Last Name:</label>
+                                <p class="form-control">@user.LastName</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Gender:</label>
+                                <p class="form-control">@user.Gender</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">NRIC:</label>
+                                <p class="form-control">@user.NRIC</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Email Address:</label>
+                                <p class="form-control">@user.UserEmail</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password:</label>
+                                <p class="form-control">@user.Password</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Date of Birth:</label>
+                                <p class="form-control">@user.DateOfBirth</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Resume:</label>
+                                <p class="form-control">
+                                    <a asp-page-handler="Download" asp-route-filePath="@user.Resume">
+                                        Download Resume
+                                    </a>
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Who Am I:</label>
+                                <p class="form-control">@user.WhoAmI</p>
+                            </div>
+                        }
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome to Ace Job Agency</h1>
+        <p>Please login or register to view data.</p>
+    </div>
+}
